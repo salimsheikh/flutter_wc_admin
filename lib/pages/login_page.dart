@@ -184,32 +184,71 @@ class _LoginPageState extends State<LoginPage> {
             height: 20,
           ),
           Center(
-              child: FormHelper.saveButton("Login", () {
-            if (validateAndSave()) {
-              setState(() {
-                isAPICallProcess = true;
-              });
+            child: SizedBox(
+              height: 50.0,
+              width: 150.0,
+              child: ElevatedButton(
+                  onPressed: () {
+                    if (isAPICallProcess == false) {
+                      if (validateAndSave()) {
+                        setState(() {
+                          isAPICallProcess = true;
+                        });
 
-              APIServices.checkLogin(loginModel).then((response) {
-                setState(() {
-                  isAPICallProcess = false;
-                });
+                        APIServices.checkLogin(loginModel).then(
+                          (response) {
+                            setState(() {
+                              isAPICallProcess = false;
+                            });
 
-                if (response) {
-                  Get.offAll(() => const HomePage());
-                } else {
-                  FormHelper.showMessage(
-                      context, "WooAdmin", "Login Failed", "OK", () {
-                    setState(() {
-                      loginModel.key = "";
-                      loginModel.secret = "";
-                    });
-                    Navigator.of(context).pop();
-                  });
-                }
-              });
-            }
-          }, textColor: const Color.fromARGB(255, 168, 117, 117).toString()))
+                            if (response) {
+                              Get.offAll(() => const HomePage());
+                            } else {
+                              FormHelper.showMessage(
+                                  context, "WooAdmin", "Login Failed", "OK",
+                                  () {
+                                setState(() {
+                                  loginModel.key = "";
+                                  loginModel.secret = "";
+                                });
+                                Navigator.of(context).pop();
+                              });
+                            }
+                          },
+                        );
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    padding: const EdgeInsets.all(5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  child: (isAPICallProcess
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                              Text("Please wait - "),
+                              SizedBox(width: 10),
+                              SizedBox(
+                                height: 15,
+                                width: 15,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ])
+                      : const Text(
+                          "Login",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ))),
+            ),
+          )
         ],
       ),
     );
