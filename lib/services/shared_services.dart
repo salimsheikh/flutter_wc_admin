@@ -11,6 +11,7 @@ class SharedServices {
   ) async {
     final pref = await SharedPreferences.getInstance();
 
+    // ignore: unnecessary_null_comparison
     if (model != null) {
       final loginSring = jsonEncode(model);
       pref.setString("login_details", loginSring);

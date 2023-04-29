@@ -22,10 +22,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    /*
     loginModel = LoginModel(
         host: 'demos.infosofttech.com',
         key: 'ck_aec03edc720dd0f0b63aff85a96dc39dad09aeb5',
         secret: 'cs_0d405cd3ba14970660737aa4d9c234220d684622');
+
+        */
+
+    loginModel = LoginModel(host: '', key: 'a', secret: '');
   }
 
   @override
@@ -112,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               onChanged: (value) => {},
               onSaved: (newValue) => {loginModel.host = newValue.toString()},
-              initialValue: loginModel.host,
+              //initialValue: loginModel.host,
             ),
           ),
           Padding(
@@ -123,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                 "Enter Consumer key",
                 "",
                 prefixIcon: const Icon(
-                  Icons.web,
+                  Icons.lock,
                   color: Colors.orangeAccent,
                 ),
               ),
@@ -147,10 +152,11 @@ class _LoginPageState extends State<LoginPage> {
                 "Enter Consumer secret",
                 "",
                 prefixIcon: const Icon(
-                  Icons.web,
+                  Icons.lock,
                   color: Colors.orangeAccent,
                 ),
               ),
+
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Consumer secret cant be empty";
@@ -160,6 +166,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (value) => {},
               onSaved: (newValue) => {loginModel.secret = newValue.toString()},
               initialValue: loginModel.secret,
+
               // controller: TextEditingController(text: loginModel.secret),
             ),
           ),
@@ -257,15 +264,9 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> scanQR() async {
     String barcodeScanRes = "";
 
-    loginModel.key = "1";
-
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", false, ScanMode.QR);
-
-      loginModel.key = "2";
-
-      // print(barcodeScanRes);
     } on PlatformException {
       return;
     }
@@ -274,13 +275,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    loginModel.key = "3";
-
     setState(() {
-      loginModel.key = "4";
-
-      loginModel.secret = barcodeScanRes;
-
       if (barcodeScanRes.isNotEmpty) {
         loginModel.key = barcodeScanRes.split("|")[0];
         loginModel.secret = barcodeScanRes.split("|")[1];

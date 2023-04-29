@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_wc_admin/models/login_model.dart';
 import 'package:flutter_wc_admin/services/shared_services.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/order_model.dart';
 
 class APIServices {
   static var client = http.Client();
@@ -24,4 +28,29 @@ class APIServices {
 
     return false;
   }
-}
+
+/*
+? added for retun null value;
+*/
+  Future<List<OrderModel>?> getOrders() async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+
+    var loginDetails = await SharedServices.loginDetails();
+
+    Map<String, String> queryString = {
+      'consumer_key': loginDetails.key,
+      'consumer_secret': loginDetails.secret
+    };
+
+    var url =
+        Uri.https(loginDetails.host, '/wp-json/wc/v3/orders', queryString);
+
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      return ordersFromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+}/*End Class */
