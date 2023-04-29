@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_wc_admin/pages/home_page.dart';
-//import 'package:flutter_wc_admin/pages/login_page.dart';
-import 'package:flutter_wc_admin/pages/ordres/ordres_list.dart';
+import 'package:flutter_wc_admin/pages/home_page.dart';
+import 'package:flutter_wc_admin/pages/login_page.dart';
+//import 'package:flutter_wc_admin/pages/ordres/ordres_list.dart';
 import 'package:flutter_wc_admin/services/shared_services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-//Widget _defaultHome = const LoginPage();
+Widget _defaultHome = const LoginPage();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool isLogged = await SharedServices.isLoggedIn();
   if (isLogged) {
-    //_defaultHome = const HomePage();
+    _defaultHome = const HomePage();
   }
 
   runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue, primaryColor: Colors.orangeAccent),
-      home: const OrderList(),
+      home: _defaultHome,
     );
   }
 }

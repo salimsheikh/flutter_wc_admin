@@ -22,15 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    /*
+
     loginModel = LoginModel(
         host: 'demos.infosofttech.com',
         key: 'ck_aec03edc720dd0f0b63aff85a96dc39dad09aeb5',
         secret: 'cs_0d405cd3ba14970660737aa4d9c234220d684622');
-
-        */
-
-    loginModel = LoginModel(host: '', key: 'a', secret: '');
+    //loginModel = LoginModel(host: '', key: 'a', secret: '');
   }
 
   @override
