@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wc_admin/pages/base_page.dart';
 import 'package:flutter_wc_admin/pages/ordres/widget_order_item.dart';
 import 'package:flutter_wc_admin/provider/orders_provider.dart';
 import 'package:provider/provider.dart';
 
-class OrderList extends StatefulWidget {
+class OrderList extends BasePage {
   const OrderList({super.key});
 
   @override
   State<OrderList> createState() => _OrderListState();
 }
 
-class _OrderListState extends State<OrderList> {
+class _OrderListState extends BasePageState<OrderList> {
   @override
   void initState() {
     super.initState();
-    //this.pageTitle = 'Ordres';
+    pageTitle = 'Ordres';
     var orderProvider = Provider.of<OrderPrivider>(context, listen: false);
     orderProvider.fetchOrders();
   }

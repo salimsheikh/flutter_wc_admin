@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
-import 'package:flutter_wc_admin/services/shared_services.dart';
+import 'package:flutter_wc_admin/pages/ordres/ordres_list.dart';
+import 'package:flutter_wc_admin/pages/products_page.dart';
+import 'categories/categories_list.dart';
+import 'customers_page.dart';
+import 'dashboard_page.dart';
 
 class NavBarModel {
   String title;
@@ -29,64 +32,66 @@ class _HomePageState extends State<HomePage> {
     NavBarModel(title: "Ordres", icon: Icons.shopping_basket, color: "#E644CA"),
   ];
   int selectedNavIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Dashbord"),
-        elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () async {
-                await SharedServices.logout();
-              },
-              icon: const Icon(Icons.logout, color: Colors.black))
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedNavIndex,
-        onTap: (index) {
-          setState(() {
-            selectedNavIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.blue,
-              ),
-              label: "Dashbaord"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.category,
-                color: Colors.blue,
-              ),
-              label: "Category"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.image,
-                color: Colors.blue,
-              ),
-              label: "Products"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.group,
-                color: Colors.blue,
-              ),
-              label: "Customer"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_basket,
-                color: Colors.blue,
-              ),
-              label: "Ordres")
-        ],
-      ),
-      body: const Center(child: Text("Dashboard")),
+      bottomNavigationBar: bottomNavigationBarMethod(),
+      body: bodyWidgetList[selectedNavIndex],
+    );
+  }
+
+  List<Widget> bodyWidgetList = [
+    const DashboardPage(),
+    const CategoriesList(),
+    const ProductsPage(),
+    const CustomersPage(),
+    const OrderList()
+  ];
+
+  BottomNavigationBar bottomNavigationBarMethod() {
+    return BottomNavigationBar(
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.grey,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: selectedNavIndex,
+      onTap: (index) {
+        setState(() {
+          selectedNavIndex = index;
+        });
+      },
+      items: const [
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.blue,
+            ),
+            label: "Dashboard"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.category,
+              color: Colors.blue,
+            ),
+            label: "Category"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.image,
+              color: Colors.blue,
+            ),
+            label: "Products"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.group,
+              color: Colors.blue,
+            ),
+            label: "Customer"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shopping_basket,
+              color: Colors.blue,
+            ),
+            label: "Ordres")
+      ],
     );
   }
 }
