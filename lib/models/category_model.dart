@@ -1,10 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+List<CategoryModel> categoriesFromJson(dynamic str) =>
+    List<CategoryModel>.from((str).map((x) => CategoryModel.fromJson(x)));
+
 class CategoryModel {
-  late int id;
-  late String name;
-  late int parent;
-  late String description;
-  late String image;
+  int id = 0;
+  String name = '';
+  int parent = 0;
+  String description = '';
+  late String image = '';
 
   CategoryModel({
     required this.id,

@@ -11,7 +11,6 @@ class ProductsPage extends BasePage {
 class _ProductsPageState extends BasePageState<ProductsPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageTitle = "Products";
   }

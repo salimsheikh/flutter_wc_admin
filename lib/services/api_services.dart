@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_wc_admin/models/category_model.dart';
 import 'package:flutter_wc_admin/models/login_model.dart';
 import 'package:flutter_wc_admin/services/shared_services.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +50,55 @@ class APIServices {
 
     if (response.statusCode == 200) {
       return ordersFromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<CategoryModel>?> getCategories({
+    String strSearch = '',
+    String sortBy = '',
+    String sortOrder = 'asc',
+    bool parentCategories = true,
+  }) async {
+    //List<CategoryModel>
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    var loginDetails = await SharedServices.loginDetails();
+
+    Map<String, String> queryString = {
+      'consumer_key': loginDetails.key,
+      'consumer_secret': loginDetails.secret,
+    };
+
+    if (strSearch != "") {
+      queryString['search'] = strSearch;
+    }
+
+    if (parentCategories) {
+      queryString['parent'] = '0';
+    }
+
+    if (sortBy != "") {
+      queryString['orderby'] = sortBy;
+    }
+
+    if (sortOrder != "") {
+      queryString['order'] = sortOrder;
+    }
+
+//String siteURL = "demos.infosofttech.com";
+
+    var url = Uri.http(
+        loginDetails.host, '/wp-json/wc/v3/products/categories', queryString);
+
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      return categoriesFromJson(json.decode(response.body));
     } else {
       return null;
     }

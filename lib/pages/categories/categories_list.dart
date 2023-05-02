@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wc_admin/pages/base_page.dart';
+import 'package:snippet_coder_utils/list_helper.dart';
+
+import '../../models/category_model.dart';
+import '../utils/searchbar_utils.dart';
 
 class CategoriesList extends BasePage {
   const CategoriesList({super.key});
@@ -9,14 +13,76 @@ class CategoriesList extends BasePage {
 }
 
 class _CategoriesListState extends BasePageState<CategoriesList> {
+  List<CategoryModel> categories = [];
+
   @override
   void initState() {
     super.initState();
     pageTitle = "Category";
+    categories = List<CategoryModel>.empty(growable: true);
+
+    categories.add(CategoryModel(
+        id: 1,
+        name: 'Baby Care',
+        parent: 0,
+        description: 'Baby Care products',
+        image: ''));
+    categories.add(CategoryModel(
+        id: 2,
+        name: 'Grocery',
+        parent: 0,
+        description: 'Grocery Products',
+        image: ''));
+    categories.add(CategoryModel(
+        id: 3,
+        name: 'Baby Care 3',
+        parent: 0,
+        description: 'Some text',
+        image: ''));
   }
 
   @override
   Widget pageUI() {
-    return const Text("Category 2");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: SearchBarUtils.searchBar(
+            context,
+            "searchCategory",
+            "Search Category",
+            "Add Category",
+            () {},
+            () {},
+          ),
+        ),
+        Divider(
+          color: Theme.of(context).primaryColor,
+        ),
+        ListUtils.buildDataTable<CategoryModel>(
+          context,
+          ["name", "Description", ""],
+          ["name", "description", ""],
+          true,
+          0,
+          categories,
+          (CategoryModel onEditVal) {
+            print(onEditVal.id);
+            print(onEditVal.name);
+          },
+          (CategoryModel onDeleteTap) {
+            print(onDeleteTap.id);
+            print(onDeleteTap.name);
+          },
+          headingRowColor: Theme.of(context).primaryColor,
+          onSort: () {
+            return true;
+          },
+          headingRowHeight: 50,
+        )
+      ],
+    );
   }
 }
