@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wc_admin/provider/loader_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:snippet_coder_utils/ProgressHUD.dart';
 import '../services/shared_services.dart';
 
 class BasePage extends StatefulWidget {
@@ -13,10 +16,17 @@ class BasePageState<T extends BasePage> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: pageUI(),
-    );
+    return Consumer<LoaderProvider>(builder: (context, loaderModel, child) {
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: ProgressHUD(
+          key: UniqueKey(),
+          inAsyncCall: loaderModel.isAPICallProcess,
+          opacity: 0.3,
+          child: pageUI(),
+        ),
+      );
+    });
   }
 
   PreferredSizeWidget buildAppBar() {

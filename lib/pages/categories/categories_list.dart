@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wc_admin/pages/base_page.dart';
+import 'package:flutter_wc_admin/pages/categories/category_add_edit.dart';
 import 'package:flutter_wc_admin/provider/searchbar_provider.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:snippet_coder_utils/list_helper.dart';
 
+import '../../enum/page_type.dart';
 import '../../models/category_model.dart';
 import '../../provider/categories_provider.dart';
 import '../utils/searchbar_utils.dart';
@@ -82,7 +85,9 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
                   strSearch: searchText,
                 );
               },
-              () {},
+              () {
+                Get.to(() => const CategoryAddEditPage(pageType: PageType.add));
+              },
             ),
           ),
           Divider(
@@ -112,6 +117,9 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
             (CategoryModel onEditVal) {
               //print(onEditVal.id);
               //print(onEditVal.name);
+
+              Get.to(() => CategoryAddEditPage(
+                  pageType: PageType.edit, model: onEditVal));
             },
             (CategoryModel onDeleteTap) {
               //print(onDeleteTap.id);

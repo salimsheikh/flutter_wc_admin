@@ -1,17 +1,22 @@
+import 'dart:convert';
+
 List<CategoryModel> categoriesFromJson(dynamic str) =>
     List<CategoryModel>.from((str).map((x) => CategoryModel.fromJson(x)));
+
+CategoryModel categoryFromJson(String str) =>
+    CategoryModel.fromJson(json.decode(str));
 
 class CategoryModel {
   int id = 0;
   String name = '';
-  int parent = 0;
+  int? parent = 0;
   String description = '';
   //String image = '';
 
   CategoryModel({
     required this.id,
     required this.name,
-    required this.parent,
+    this.parent,
     required this.description,
     //required this.image,
   });

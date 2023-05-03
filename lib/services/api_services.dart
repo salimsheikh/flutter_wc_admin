@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter_wc_admin/models/category_model.dart';
@@ -90,8 +92,6 @@ class APIServices {
       queryString['order'] = sortOrder;
     }
 
-//String siteURL = "demos.infosofttech.com";
-
     var url = Uri.http(
         loginDetails.host, '/wp-json/wc/v3/products/categories', queryString);
 
@@ -101,6 +101,108 @@ class APIServices {
       return categoriesFromJson(json.decode(response.body));
     } else {
       return [];
+    }
+  }
+
+  Future<CategoryModel> createCategory(CategoryModel model) async {
+    var loginDetails = await SharedServices.loginDetails();
+
+    var authToken = base64
+        .encode(utf8.encode("${loginDetails.key}:${loginDetails.secret}"));
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'authorization': 'Basic $authToken',
+    };
+
+    var url = Uri.http(loginDetails.host, '/wp-json/wc/v3/products/categories');
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        model.toJson(),
+      ),
+    );
+
+    print(response);
+
+    return categoryFromJson(response.body);
+
+    /*
+
+    if (response.statusCode == 201) {
+      return categoryFromJson(response.body);
+    } else {
+      return null;
+    }
+    */
+  }
+
+  Future<CategoryModel> updateCategory(CategoryModel model) async {
+    var loginDetails = await SharedServices.loginDetails();
+
+    var authToken = base64
+        .encode(utf8.encode("${loginDetails.key}:${loginDetails.secret}"));
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'authorization': 'Basic $authToken',
+    };
+
+    String catId = model.id.toString();
+
+    var url = Uri.http(
+      loginDetails.host,
+      '/wp-json/wc/v3/products/categories/{$catId}',
+    );
+
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        model.toJson(),
+      ),
+    );
+
+    return categoryFromJson(response.body);
+    /*
+
+    if (response.statusCode == 201) {
+      return categoryFromJson(response.body);
+    } else {
+      return null;
+    }
+    */
+  }
+
+  Future<bool> deleteCategory(CategoryModel model) async {
+    var loginDetails = await SharedServices.loginDetails();
+
+    var authToken = base64
+        .encode(utf8.encode("${loginDetails.key}:${loginDetails.secret}"));
+
+    Map<String, String> requestHeaders = {
+      'authorization': 'Basic $authToken',
+    };
+
+    String catId = model.id.toString();
+
+    var url = Uri.http(
+      loginDetails.host,
+      '/wp-json/wc/v3/products/categories/{$catId}',
+      {'force': "true"},
+    );
+
+    var response = await client.delete(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
 }/*End Class */
