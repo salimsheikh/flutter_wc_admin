@@ -55,7 +55,7 @@ class APIServices {
     }
   }
 
-  Future<List<CategoryModel>?> getCategories({
+  Future<List<CategoryModel>> getCategories({
     String strSearch = '',
     String sortBy = '',
     String sortOrder = 'asc',
@@ -100,7 +100,7 @@ class APIServices {
     if (response.statusCode == 200) {
       return categoriesFromJson(json.decode(response.body));
     } else {
-      return null;
+      return [];
     }
   }
 }/*End Class */

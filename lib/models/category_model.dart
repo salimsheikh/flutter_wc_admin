@@ -6,22 +6,22 @@ class CategoryModel {
   String name = '';
   int parent = 0;
   String description = '';
-  late String image = '';
+  //String image = '';
 
   CategoryModel({
     required this.id,
     required this.name,
     required this.parent,
     required this.description,
-    required this.image,
+    //required this.image,
   });
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    name = json['name'].toString().replaceAll("&amp;", "&");
     parent = json['parent'];
-    description = json['description'];
-    image = json['image'];
+    description = json['description'].toString().replaceAll("&amp;", "&");
+    //image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,7 +32,7 @@ class CategoryModel {
     data['name'] = name;
     data['parent'] = parent;
     data['description'] = description;
-    data['image'] = image;
+    // data['image'] = image;
 
     return data;
   }
