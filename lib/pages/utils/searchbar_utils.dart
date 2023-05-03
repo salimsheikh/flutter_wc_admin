@@ -1,4 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
 
 class SearchBarUtils {
   static Widget searchBar(
@@ -9,67 +12,48 @@ class SearchBarUtils {
       Function onSearchTap,
       Function onAddButtnTap) {
     String val = "";
-
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width - 200,
-          child: TextFormField(
-            decoration: fieldDecoration(
-              context,
-              placeHolder,
-              '',
-              suffixIcon: IconButton(
-                onPressed: () {
+          width: MediaQuery.of(context).size.width - 160,
+          child: FormHelper.inputFieldWidget(
+            context,
+            keyName,
+            placeHolder,
+            () {},
+            () {},
+            onChange: (onChangeVal) => {val = onChangeVal},
+            showPrefixIcon: false,
+            suffixIcon: SizedBox(
+              child: GestureDetector(
+                child: const Icon(Icons.search),
+                onTap: () {
+                  //return onSearchTap();
                   onSearchTap(val);
                 },
-                icon: const Icon(Icons.web),
               ),
             ),
+            borderFocusColor: Theme.of(context).primaryColor,
+            borderColor: Theme.of(context).primaryColor,
+            borderRadius: 10,
+            paddingLeft: 0,
           ),
         ),
-        SizedBox(
-          height: 50.0,
-          width: 150.0,
-          child: GestureDetector(
-            onTap: () {
-              onSearchTap(val);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.redAccent,
-                  style: BorderStyle.solid,
-                  width: 1.0,
-                ),
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      addButtonLabel,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        FormHelper.submitButton(
+          addButtonLabel,
+          () {
+            return onAddButtnTap();
+          },
+          borderRadius: 10,
+          width: 130,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
         ),
       ],
     );
   }
-
+/*
   static InputDecoration fieldDecoration(
     BuildContext context,
     String hintText,
@@ -98,4 +82,5 @@ class SearchBarUtils {
       ),
     );
   }
+  */
 }

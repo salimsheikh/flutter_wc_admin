@@ -4,8 +4,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_wc_admin/models/login_model.dart';
 import 'package:flutter_wc_admin/pages/home_page.dart';
 import 'package:flutter_wc_admin/services/api_services.dart';
-import 'package:flutter_wc_admin/utils/form_helper.dart';
 import 'package:get/get.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -208,15 +208,19 @@ class _LoginPageState extends State<LoginPage> {
                             if (response) {
                               Get.offAll(() => const HomePage());
                             } else {
-                              FormHelper.showMessage(
-                                  context, "WooAdmin", "Login Failed", "OK",
-                                  () {
-                                setState(() {
-                                  loginModel.key = "";
-                                  loginModel.secret = "";
-                                });
-                                Navigator.of(context).pop();
-                              });
+                              FormHelper.showSimpleAlertDialog(
+                                context,
+                                "WooAdmin",
+                                "Login Failed",
+                                "Ok",
+                                () {
+                                  setState(() {
+                                    loginModel.key = "";
+                                    loginModel.secret = "";
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                              );
                             }
                           },
                         );

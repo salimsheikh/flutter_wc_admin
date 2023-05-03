@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_wc_admin/pages/base_page.dart';
+import 'package:flutter_wc_admin/provider/searchbar_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:snippet_coder_utils/list_helper.dart';
 
@@ -51,26 +54,43 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
 
   @override
   Widget pageUI() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: SearchBarUtils.searchBar(
-            context,
-            "searchCategory",
-            "Search Category",
-            "Add Category",
-            () {},
-            () {},
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: SearchBarUtils.searchBar(
+              context,
+              "strCategory",
+              "Search Category",
+              "Add Category",
+              (searchText) {
+                SortModel sortModel =
+                    Provider.of<SearchBarProvider>(context, listen: false)
+                        .sortModel;
+
+                var categoriesProvider =
+                    Provider.of<CategoriesProvider>(context, listen: false);
+
+                categoriesProvider.resetStreams();
+
+                categoriesProvider.fatchCategoreis(
+                  sortBy: sortModel.sortColumnName,
+                  sortOrder: sortModel.sortAscending ? 'asc' : 'desc',
+                  strSearch: searchText,
+                );
+              },
+              () {},
+            ),
           ),
-        ),
-        Divider(
-          color: Theme.of(context).primaryColor,
-        ),
-        categoriesListUI(),
-      ],
+          Divider(
+            color: Theme.of(context).primaryColor,
+          ),
+          categoriesListUI(),
+        ],
+      ),
     );
   }
 
@@ -80,10 +100,14 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
         if (model.categoriesList.isNotEmpty) {
           return ListUtils.buildDataTable<CategoryModel>(
             context,
-            ["name", "Description", ""],
+            ["Name", "Description", ""],
             ["name", "description", ""],
-            true,
-            0,
+            Provider.of<SearchBarProvider>(context, listen: true)
+                .sortModel
+                .sortAscending,
+            Provider.of<SearchBarProvider>(context, listen: true)
+                .sortModel
+                .sortColumnIndex,
             model.categoriesList,
             (CategoryModel onEditVal) {
               //print(onEditVal.id);
@@ -94,7 +118,17 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
               //print(onDeleteTap.name);
             },
             headingRowColor: Theme.of(context).primaryColor,
-            onSort: () {
+            onSort: (columnIndex, columnName, ascending) {
+              Provider.of<SearchBarProvider>(context, listen: false)
+                  .setSort(columnIndex, columnName, ascending);
+
+              var categoriesProvider =
+                  Provider.of<CategoriesProvider>(context, listen: false);
+              categoriesProvider.resetStreams();
+              categoriesProvider.fatchCategoreis(
+                sortBy: columnName,
+                sortOrder: ascending ? 'asc' : 'desc',
+              );
               return true;
             },
             headingRowHeight: 50,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wc_admin/pages/base_page.dart';
 import 'package:flutter_wc_admin/pages/categories/categories_list.dart';
 import 'package:flutter_wc_admin/pages/home_page.dart';
 import 'package:flutter_wc_admin/pages/login_page.dart';
 import 'package:flutter_wc_admin/provider/categories_provider.dart';
+import 'package:flutter_wc_admin/provider/searchbar_provider.dart';
 //import 'package:flutter_wc_admin/pages/ordres/ordres_list.dart';
 import 'package:flutter_wc_admin/services/shared_services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -31,6 +33,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CategoriesProvider(),
           child: const CategoriesList(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchBarProvider(),
+          child: const BasePage(),
         ),
       ],
       child: GetMaterialApp(
