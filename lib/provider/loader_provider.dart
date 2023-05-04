@@ -5,7 +5,7 @@ class LoaderProvider with ChangeNotifier {
   bool get isAPICallProcess => privateIsAPICallProcess;
 
   setLoadingStatus(bool status) {
-    privateIsAPICallProcess = true;
+    privateIsAPICallProcess = status;
     notifyListeners();
   }
 }

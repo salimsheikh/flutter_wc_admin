@@ -11,6 +11,7 @@ class CategoryModel {
   String name = '';
   int? parent = 0;
   String description = '';
+  bool success = true;
   //String image = '';
 
   CategoryModel({

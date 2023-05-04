@@ -37,12 +37,15 @@ class _CategoryAddEditPageState extends BasePageState<CategoryAddEditPage> {
     if (widget.pageType == PageType.edit) {
       categoryModel = widget.model!;
     } else {
-      categoryModel = CategoryModel(id: 0, name: '', description: '');
+      categoryModel =
+          CategoryModel(id: 0, name: '', description: '', parent: 0);
     }
   }
 
   @override
   Widget pageUI() {
+    String datetime = DateTime.now().toString();
+
     return Form(
       key: globalKey,
       child: SingleChildScrollView(
@@ -66,7 +69,10 @@ class _CategoryAddEditPageState extends BasePageState<CategoryAddEditPage> {
                 (onSaveValue) {
                   categoryModel.name = onSaveValue;
                 },
-                initialValue: categoryModel.name,
+                initialValue: widget.pageType == PageType.add
+                    ? "test $datetime"
+                    : categoryModel.name,
+                //initialValue: "test $datetime",
                 borderColor: Theme.of(context).primaryColor,
                 borderFocusColor: Theme.of(context).primaryColor,
                 showPrefixIcon: false,
@@ -102,8 +108,10 @@ class _CategoryAddEditPageState extends BasePageState<CategoryAddEditPage> {
                 child: FormHelper.submitButton(
                   "Save",
                   () {
+                    /*
                     Provider.of<LoaderProvider>(context, listen: false)
-                        .setLoadingStatus(true);
+                        .setLoadingStatus(true);*/
+
                     /*Save Start form Here */
                     if (validateAndSave()) {
                       if (widget.pageType == PageType.add) {
@@ -111,15 +119,21 @@ class _CategoryAddEditPageState extends BasePageState<CategoryAddEditPage> {
                             .createCategory(
                           categoryModel,
                           (val) {
-                            Provider.of<LoaderProvider>(context, listen: false)
-                                .setLoadingStatus(false);
-
+                            /*Provider.of<LoaderProvider>(context, listen: true)
+                                .setLoadingStatus(false);*/
                             if (val) {
                               Get.snackbar(
-                                "Add App",
-                                "Category Created",
+                                "Add Category",
+                                "Category created successfully",
                                 snackPosition: SnackPosition.BOTTOM,
-                                duration: const Duration(seconds: 3),
+                                duration: const Duration(seconds: 5),
+                              );
+                            } else {
+                              Get.snackbar(
+                                "Add Category",
+                                "Category failed",
+                                snackPosition: SnackPosition.BOTTOM,
+                                duration: const Duration(seconds: 5),
                               );
                             }
                           },
@@ -133,14 +147,14 @@ class _CategoryAddEditPageState extends BasePageState<CategoryAddEditPage> {
                             Provider.of<LoaderProvider>(context, listen: false)
                                 .setLoadingStatus(false);
 
-                            if (val) {
-                              Get.snackbar(
-                                "Add App",
-                                "Category Updated",
-                                snackPosition: SnackPosition.BOTTOM,
-                                duration: const Duration(seconds: 3),
-                              );
-                            }
+                            Get.snackbar(
+                              "Update Category",
+                              val
+                                  ? "Category updated successfully"
+                                  : "Category updation failed",
+                              snackPosition: SnackPosition.BOTTOM,
+                              duration: const Duration(seconds: 3),
+                            );
                           },
                         );
                         /*Edit Completed */

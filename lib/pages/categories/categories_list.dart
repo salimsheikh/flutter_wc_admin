@@ -11,6 +11,7 @@ import 'package:snippet_coder_utils/list_helper.dart';
 import '../../enum/page_type.dart';
 import '../../models/category_model.dart';
 import '../../provider/categories_provider.dart';
+import '../../provider/loader_provider.dart';
 import '../utils/searchbar_utils.dart';
 
 class CategoriesList extends BasePage {
@@ -115,15 +116,28 @@ class _CategoriesListState extends BasePageState<CategoriesList> {
                 .sortColumnIndex,
             model.categoriesList,
             (CategoryModel onEditVal) {
-              //print(onEditVal.id);
-              //print(onEditVal.name);
-
               Get.to(() => CategoryAddEditPage(
                   pageType: PageType.edit, model: onEditVal));
             },
             (CategoryModel onDeleteTap) {
-              //print(onDeleteTap.id);
-              //print(onDeleteTap.name);
+              //Provider.of<LoaderProvider>(context, listen: false).setLoadingStatus(true);
+
+              Provider.of<CategoriesProvider>(context, listen: false)
+                  .deleteCategory(
+                onDeleteTap,
+                (val) {
+                  //Provider.of<LoaderProvider>(context, listen: false).setLoadingStatus(false);
+
+                  Get.snackbar(
+                    "Delete Category",
+                    val
+                        ? "Category deleted successfully"
+                        : "Category deleted failed",
+                    snackPosition: SnackPosition.BOTTOM,
+                    duration: const Duration(seconds: 5),
+                  );
+                },
+              );
             },
             headingRowColor: Theme.of(context).primaryColor,
             onSort: (columnIndex, columnName, ascending) {

@@ -51,7 +51,9 @@ class CategoriesProvider with ChangeNotifier {
     CategoryModel privateCategoryModel =
         await privateAPIServices.createCategory(model);
 
-    if (privateCategoryModel != null) {
+    //print(privateCategoryModel);
+
+    if (privateCategoryModel.success) {
       privateCategoriesList.add(privateCategoryModel);
       onCallback(true);
     } else {

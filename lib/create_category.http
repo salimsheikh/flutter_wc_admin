@@ -1,0 +1,13 @@
+###  User SignUp API
+
+POST https://demos.infosofttech.com/wp-json/wc/v3/products/categories HTTP/1.1
+Content-Type: application/json
+authorization: Basic ck_aec03edc720dd0f0b63aff85a96dc39dad09aeb5:cs_0d405cd3ba14970660737aa4d9c234220d684622
+
+
+
+{
+    "name": "test 3", 
+    "description" : "test 3 description"
+}
+

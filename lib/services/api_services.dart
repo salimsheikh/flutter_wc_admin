@@ -115,28 +115,29 @@ class APIServices {
       'authorization': 'Basic $authToken',
     };
 
-    var url = Uri.http(loginDetails.host, '/wp-json/wc/v3/products/categories');
+    Map<String, dynamic> bodyJason = {
+      'id': 0,
+      'name': model.name,
+      'description': model.description,
+    };
+
+    var url =
+        Uri.https(loginDetails.host, '/wp-json/wc/v3/products/categories');
 
     var response = await client.post(
       url,
       headers: requestHeaders,
-      body: jsonEncode(
-        model.toJson(),
-      ),
+      body: jsonEncode(bodyJason),
     );
 
-    print(response);
-
-    return categoryFromJson(response.body);
-
-    /*
-
     if (response.statusCode == 201) {
-      return categoryFromJson(response.body);
+      var newModel = categoryFromJson(response.body);
+      newModel.success = true;
+      return newModel;
     } else {
-      return null;
+      model.success = false;
+      return model;
     }
-    */
   }
 
   Future<CategoryModel> updateCategory(CategoryModel model) async {
@@ -152,9 +153,9 @@ class APIServices {
 
     String catId = model.id.toString();
 
-    var url = Uri.http(
+    var url = Uri.https(
       loginDetails.host,
-      '/wp-json/wc/v3/products/categories/{$catId}',
+      '/wp-json/wc/v3/products/categories/$catId',
     );
 
     var response = await client.put(
@@ -165,15 +166,14 @@ class APIServices {
       ),
     );
 
-    return categoryFromJson(response.body);
-    /*
-
     if (response.statusCode == 201) {
-      return categoryFromJson(response.body);
+      var newModel = categoryFromJson(response.body);
+      newModel.success = true;
+      return newModel;
     } else {
-      return null;
+      model.success = false;
+      return model;
     }
-    */
   }
 
   Future<bool> deleteCategory(CategoryModel model) async {
@@ -188,9 +188,9 @@ class APIServices {
 
     String catId = model.id.toString();
 
-    var url = Uri.http(
+    var url = Uri.https(
       loginDetails.host,
-      '/wp-json/wc/v3/products/categories/{$catId}',
+      '/wp-json/wc/v3/products/categories/$catId',
       {'force': "true"},
     );
 
@@ -199,7 +199,7 @@ class APIServices {
       headers: requestHeaders,
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return true;
     } else {
       return false;
