@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wc_admin/pages/setting_page.dart';
 import 'package:flutter_wc_admin/provider/loader_provider.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import '../services/shared_services.dart';
@@ -36,6 +38,15 @@ class BasePageState<T extends BasePage> extends State<T> {
         automaticallyImplyLeading: true,
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
+          GestureDetector(
+            onTap: () {
+              Get.to(() => const SettingPage());
+            },
+            child: const Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+          ),
           IconButton(
               onPressed: () async {
                 await SharedServices.logout();

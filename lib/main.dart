@@ -5,6 +5,7 @@ import 'package:flutter_wc_admin/pages/home_page.dart';
 import 'package:flutter_wc_admin/pages/login_page.dart';
 import 'package:flutter_wc_admin/provider/categories_provider.dart';
 import 'package:flutter_wc_admin/provider/loader_provider.dart';
+import 'package:flutter_wc_admin/provider/login_provider.dart';
 import 'package:flutter_wc_admin/provider/searchbar_provider.dart';
 //import 'package:flutter_wc_admin/pages/ordres/ordres_list.dart';
 import 'package:flutter_wc_admin/services/shared_services.dart';
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => LoaderProvider(),
+          child: const BasePage(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LoginProvider(),
           child: const BasePage(),
         ),
       ],

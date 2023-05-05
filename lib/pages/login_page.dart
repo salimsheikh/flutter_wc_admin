@@ -235,10 +235,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: (isAPICallProcess
-                      ? Row(
+                      ? const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                               Text("Please wait - "),
                               SizedBox(width: 10),
                               SizedBox(

@@ -14,12 +14,15 @@ class CategoryModel {
   bool success = true;
   //String image = '';
 
+  String fileName = '';
+  CategoryImage? image;
+
   CategoryModel({
     required this.id,
     required this.name,
     this.parent,
     required this.description,
-    //required this.image,
+    this.image,
   });
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
@@ -27,7 +30,9 @@ class CategoryModel {
     name = json['name'].toString().replaceAll("&amp;", "&");
     parent = json['parent'];
     description = json['description'].toString().replaceAll("&amp;", "&");
-    //image = json['image'];
+    image = json['image'] != null
+        ? CategoryImage.fromJson(json['image'])
+        : CategoryImage();
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +45,27 @@ class CategoryModel {
     data['description'] = description;
     // data['image'] = image;
 
+    if (image != null) {
+      data['image'] = image.toString();
+    }
+
     return data;
   }
-}/*End Model */
+} /*End Model */
+
+class CategoryImage {
+  late String? src = '';
+
+  CategoryImage({this.src});
+
+  CategoryImage.fromJson(Map<String, dynamic> json) {
+    src = json['src'];
+  }
+
+  Map<String, dynamic> toJson() {
+    //final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['src'] = src;
+    return data;
+  }
+}
